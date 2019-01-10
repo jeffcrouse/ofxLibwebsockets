@@ -71,7 +71,8 @@ namespace ofxLibwebsockets {
 
     //--------------------------------------------------------------
     bool Client::connect ( ClientOptions options ){
-        ofLog( OF_LOG_VERBOSE, "[ofxLibwebsockets] connect: "+options.host+":"+ofToString(options.port)+options.channel+":"+ofToString(options.bUseSSL) );
+        ofLogVerbose("ofxLibwebsockets") << "connect: "
+            << options.host+":"+ofToString(options.port)+options.channel+":"+ofToString(options.bUseSSL);
         address = options.host;
         port    = options.port;  
         channel = options.channel;
@@ -123,7 +124,7 @@ namespace ofxLibwebsockets {
         info.uid = -1;
         
         if ( options.ka_time != 0 ){
-            ofLogVerbose()<<"[ofxLibwebsockets] Setting timeout "<<options.ka_time;
+            ofLogVerbose("ofxLibwebsockets")<< "Setting timeout "<<options.ka_time;
             info.ka_time = options.ka_time;
             info.ka_probes = options.ka_probes;
             info.ka_interval = options.ka_interval;
@@ -136,10 +137,10 @@ namespace ofxLibwebsockets {
         //                                      &lws_protocols[0], libwebsocket_internal_extensions,
         //                                      NULL, NULL, /*NULL,*/ -1, -1, 0, NULL);
         if (context == NULL){
-            ofLogError() << "[ofxLibwebsockets] libwebsocket init failed";
+            ofLogError("ofxLibwebsockets") << "libwebsocket init failed";
             return false;
         } else {
-            ofLogVerbose() << "[ofxLibwebsockets] libwebsocket init success";
+            ofLogVerbose("ofxLibwebsockets") << "libwebsocket init success";
             
             string host = options.host +":"+ ofToString( options.port );
             
@@ -155,13 +156,13 @@ namespace ofxLibwebsockets {
             }
                         
             if ( lwsconnection == NULL ){
-                ofLogError() << "[ofxLibwebsockets] client connection failed";
+                ofLogError("ofxLibwebsockets") << "client connection failed";
                 return false;
             } else {
                 connection = new Connection( (Reactor*) &context, &clientProtocol );
                 connection->ws = lwsconnection;
                 
-                ofLogVerbose() << "[ofxLibwebsockets] Connection successfully created. Connecting.";
+                ofLogVerbose("ofxLibwebsockets") << "Connection successfully created. Connecting.";
                 startThread();   
                 return true;
             }
